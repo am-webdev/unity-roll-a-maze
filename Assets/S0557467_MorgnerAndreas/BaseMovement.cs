@@ -32,8 +32,8 @@ public class BaseMovement : MonoBehaviour {
 
         //Apply an exaggerated ammount of rotation to the pedals to visualize the players input
         //Make the rotation look right
-		horzPedal.transform.Rotate(new Vector3(0, moveHorizontal, 0));
-		vertPedal.transform.Rotate(new Vector3(0, moveVertical, 0));
+		horzPedal.transform.Rotate(new Vector3(0, -moveHorizontal * 0.5f, 0));
+		vertPedal.transform.Rotate(new Vector3(0, -moveVertical * 0.5f, 0));
 
     }
 }
