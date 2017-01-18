@@ -19,15 +19,21 @@ public class BaseMovement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //Get Input from Input.GetAxis
-        //Stretch it from 0-1 to 0 - maxRotFactor
+		//Get Input from Input.GetAxis
+		//Stretch it from 0-1 to 0 - maxRotFactor
+
+		float moveHorizontal = Input.GetAxis ("Horizontal") * rotFactor;
+		float moveVertical = Input.GetAxis ("Vertical") * rotFactor;
 
         //Apply a part of the rotation to this (and children) to rotate the plafield
         //Use Quaternion.Slerp und Quaternion.Euler for doing it
         //REM: Maybe you have to invert one axis to get things right visualy
 
+
         //Apply an exaggerated ammount of rotation to the pedals to visualize the players input
         //Make the rotation look right
+		horzPedal.transform.Rotate(new Vector3(0, moveHorizontal, 0));
+		vertPedal.transform.Rotate(new Vector3(0, moveVertical, 0));
 
     }
 }
