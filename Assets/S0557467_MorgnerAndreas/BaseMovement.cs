@@ -10,6 +10,9 @@ public class BaseMovement : MonoBehaviour {
 
     void Start () {
         //Get References to the game pedals for applying a rotation in Update()
+		horzPedal = GameObject.Find("HorzPedal");
+		vertPedal = GameObject.Find("VertPedal");
+
         //initialize all values for use
     }
 

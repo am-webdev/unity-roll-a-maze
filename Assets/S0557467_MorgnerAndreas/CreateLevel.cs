@@ -23,7 +23,6 @@ public class CreateLevel : MonoBehaviour
     {
         //Gather together all refrences you will need later on
 
-
         //Build the values for xExt and zExt from xHalfExt and zHalfExt
         //Build an offset for the dyn playfield from the BasePlatform e.g. the bigger halfExtent value in unity units
         //Calculate a scale factor for scaling the non-movable environment (and therefore the camera) and the BasePlatform 
