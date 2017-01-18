@@ -28,7 +28,7 @@ public class BaseMovement : MonoBehaviour {
         //Apply a part of the rotation to this (and children) to rotate the plafield
         //Use Quaternion.Slerp und Quaternion.Euler for doing it
         //REM: Maybe you have to invert one axis to get things right visualy
-
+		transform.rotation=Quaternion.Slerp(transform.rotation, Quaternion.Euler(moveVertical,0,-moveHorizontal), Time.deltaTime*2.0f);
 
         //Apply an exaggerated ammount of rotation to the pedals to visualize the players input
         //Make the rotation look right
