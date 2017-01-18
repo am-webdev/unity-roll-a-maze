@@ -55,7 +55,7 @@ public class CreateLevel : MonoBehaviour
 
         //Scale Environment
         scaleFac = 0.8f*(xExt)/tileSize;
-        floor.transform.localScale = new Vector3(xExt * zExt - tileSize / 2, 1, xExt * zExt - tileSize / 2);
+        floor.transform.localScale = new Vector3(xExt*tileSize - tileSize / 2, 1, zExt*tileSize - tileSize / 2);
 
         environment.transform.localScale = new Vector3(scaleFac, scaleFac, scaleFac);
 
