@@ -15,8 +15,8 @@ public class CreateLevel : MonoBehaviour
     public GameObject exitTile;
     public GameObject[] floorTiles;
 
-    private int xExt, zExt;
-    private int start, end;
+    private int xExt, zExt;     // represents the dimensions of the grounding floor of the maze
+    private int start, end;     // should be the index of an entry from a List<GameObject> that refers to the starting/ending point of the maze
 
     // Use this for initialization
     void Awake()
@@ -62,7 +62,10 @@ public class CreateLevel : MonoBehaviour
     void placeBallStart()
     {
         //Reset Physics
+        if (ball != null) ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
         //Place the ball
+        ball.transform.position = floorTiles[start].transform.position;
     }
 
     public void EndzoneTrigger(GameObject other)
