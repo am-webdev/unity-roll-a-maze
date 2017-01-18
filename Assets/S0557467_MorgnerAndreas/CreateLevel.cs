@@ -54,23 +54,15 @@ public class CreateLevel : MonoBehaviour
 
         environment.transform.localScale = new Vector3(scaleFac, scaleFac, scaleFac);
 
-        //Scale  + position BasePlate
-
-        Instantiate(floorTiles[1], new Vector3(0, offset, 0), Quaternion.Euler(0,90, 0), root.transform);
-
-
         if (root != null)
         {
             //Create the outer walls for given extXZ
-            //GameObject outerwall = Instantiate(outerWall, new Vector3(0, 0, 0), Quaternion.Euler(0, 90, 0), root.transform) as GameObject;
-
             for (int i = 0; i < xExt; i++)
             {
                 GameObject wallsnippetN = Instantiate(outerWall, new Vector3(-(tileSize/2) + (-xHalfExt * tileSize), offset, (float)i * tileSize - (xHalfExt * tileSize)), Quaternion.Euler(0, 90, 0), root.transform) as GameObject;
                 GameObject wallsnippetS = Instantiate(outerWall, new Vector3((tileSize/2) + (xHalfExt * tileSize), offset, (float)i * tileSize - (xHalfExt * tileSize)), Quaternion.Euler(0, 90, 0), root.transform) as GameObject;
 
             }
-
             for (int i = 0; i < zExt; i++)
             {
                 GameObject wallsnippetE = Instantiate(outerWall, new Vector3((float)i * tileSize - (xHalfExt * tileSize), offset, (tileSize / 2) + (xHalfExt * tileSize)), Quaternion.identity, root.transform) as GameObject;
@@ -78,12 +70,16 @@ public class CreateLevel : MonoBehaviour
 
             }
 
-            //GameObject outerwallE = Instantiate(outerWall, new Vector3(0, 0, 0), Quaternion.identity, root.transform) as GameObject;
-            //GameObject outerwallS = Instantiate(outerWall, new Vector3(0, 0, 0), Quaternion.Euler(0, 90, 0), root.transform) as GameObject;
-            //GameObject outerwallW = Instantiate(outerWall, new Vector3(0, 0, 0), Quaternion.identity, root.transform) as GameObject;
-
             //create a maze
-            //Build the maze from the given set of prefabs
+            //Build the maze floorfrom the given set of prefabs
+
+            for (int i = 0; i < xExt; i++)
+            {
+                for (int j = 0; j < zExt; j++)
+                {
+                    GameObject mazefloor = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], new Vector3(i*tileSize - xExt/2*tileSize, offset, j* tileSize - zExt / 2 * tileSize), Quaternion.identity, root.transform) as GameObject;
+                }
+            }
             //Set the walls for the maze (place only one wall between two cells, not two!)
 
             //Place the PlayerBall above the playfiel
