@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class CreateLevel : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class CreateLevel : MonoBehaviour
     public int zHalfExt = 1;
 
     public GameObject outerWall;
+
     public GameObject innerWall;
     public GameObject exitTile;
     public GameObject[] floorTiles;
@@ -19,6 +22,7 @@ public class CreateLevel : MonoBehaviour
     private int start, end;     // should be the index of an entry from a List<GameObject> that refers to the starting/ending point of the maze
     private float offset;
     private float scaleFac;
+    private List<GameObject> floormazetiles = new List<GameObject>();
 
     // Use this for initialization
     void Awake()
@@ -51,6 +55,7 @@ public class CreateLevel : MonoBehaviour
 
         //Scale Environment
         scaleFac = 0.8f*(xExt)/tileSize;
+        floor.transform.localScale = new Vector3(xExt * zExt - tileSize / 2, 1, xExt * zExt - tileSize / 2);
 
         environment.transform.localScale = new Vector3(scaleFac, scaleFac, scaleFac);
 
@@ -73,13 +78,55 @@ public class CreateLevel : MonoBehaviour
             //create a maze
             //Build the maze floorfrom the given set of prefabs
 
+            int startX, startZ, endX, endZ;
+
+            startX = UnityEngine.Random.Range(0, xExt);
+            startZ = UnityEngine.Random.Range(0, zExt);
+            start = startX * startZ;
+
+            endX = UnityEngine.Random.Range(0, xExt);
+            endZ = UnityEngine.Random.Range(0, zExt);
+            end = endX * endZ;
+
+            while (end == start)
+            {
+                Debug.Log("prevent end == start...");
+                endX = UnityEngine.Random.Range(0, xExt);
+                endZ = UnityEngine.Random.Range(0, zExt);
+                end = endX * endZ;
+            }
+            Debug.Log("Start: "+ startX + ":"+startZ);
+            Debug.Log("End: " + endX + ":" + endZ);
+
+
             for (int i = 0; i < xExt; i++)
             {
                 for (int j = 0; j < zExt; j++)
                 {
-                    GameObject mazefloor = Instantiate(floorTiles[Random.Range(0, floorTiles.Length)], new Vector3(i*tileSize - xExt/2*tileSize, offset, j* tileSize - zExt / 2 * tileSize), Quaternion.identity, root.transform) as GameObject;
+                    GameObject mazefloor;
+                    if (i == endX && j == endZ)
+                    {
+                        // Add exitTile to floor
+                        mazefloor = Instantiate(exitTile, 
+                            new Vector3(i * tileSize - xExt / 2 * tileSize, offset, j * tileSize - zExt / 2 * tileSize), Quaternion.identity, root.transform) as GameObject;
+                        mazefloor.tag = "Finish";
+                    }
+                    else if (i == startX && j == startZ)    // prevent holes on start tile
+                    {
+                        Debug.Log("Hole on start..");
+                        mazefloor = Instantiate(floorTiles[0],
+                            new Vector3(i * tileSize - xExt / 2 * tileSize, offset, j * tileSize - zExt / 2 * tileSize), Quaternion.identity, root.transform) as GameObject;
+                    }
+                    else
+                    {
+                        mazefloor = Instantiate(floorTiles[UnityEngine.Random.Range(0, floorTiles.Length)],
+                            new Vector3(i * tileSize - xExt / 2 * tileSize, offset, j * tileSize - zExt / 2 * tileSize), Quaternion.identity, root.transform) as GameObject;                        
+                    }
+                    mazefloor.name = "Floor (" + i + "," + j + ")";
+                    floormazetiles.Add(mazefloor);
                 }
             }
+
             //Set the walls for the maze (place only one wall between two cells, not two!)
 
             //Place the PlayerBall above the playfiel
@@ -94,23 +141,32 @@ public class CreateLevel : MonoBehaviour
         if (ball != null) ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
         //Place the ball
-        ball.transform.position = floorTiles[start].transform.position;
+        ball.transform.position = floormazetiles[start].transform.position;
+        ball.transform.position += new Vector3(0, 4, 0);
     }
 
     public void EndzoneTrigger(GameObject other)
     {
         //Check if ball first...
         //Player has fallen onto ground plane, reset
+        if (other.tag == "Respawn")
+        {
+            placeBallStart();
+        }
     }
     public void winTrigger(GameObject other)
     {
         //Check if ball first...
+        if (other.tag == "Finish")
+        {
 
-        //Destroy this maze
-        //Generate new maze by reload the whole application - can be improved by regenerate the Maze itself (and increse the dimensions)
-        Application.LoadLevel(0);
-        //Player has fallen onto ground plane, reset
-        placeBallStart();
+            //Destroy this maze
+            //Generate new maze by reload the whole application - can be improved by regenerate the Maze itself (and increse the dimensions)
+            Application.LoadLevel(0);
+            //Player has fallen onto ground plane, reset
+            placeBallStart();
+
+        }
     }
 }
 	

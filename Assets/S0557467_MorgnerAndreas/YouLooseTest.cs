@@ -9,11 +9,13 @@ public class YouLooseTest : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //Get a reference
+        gameCtrl = (CreateLevel)FindObjectOfType(typeof(CreateLevel));
     }
-
-     void OnTriggerEnter(Collider other)
+   
+    void OnTriggerEnter(Collider other)
     {
         //call a method of gameCtrl
+        Debug.Log(name + tag);
+        gameCtrl.EndzoneTrigger(gameObject);
     }
 }
