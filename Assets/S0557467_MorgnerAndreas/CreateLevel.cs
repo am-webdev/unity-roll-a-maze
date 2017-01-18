@@ -22,9 +22,20 @@ public class CreateLevel : MonoBehaviour
     void Awake()
     {
         //Gather together all refrences you will need later on
+		floor 			= GameObject.Find ("DSBasementFloor");
+		environment 	= GameObject.Find ("Environment");
+		ball 			= GameObject.Find ("DSPlayerBall");
+
+		// Not created yet
+		// root 			= GameObject.Find ("");
+
 
         //Build the values for xExt and zExt from xHalfExt and zHalfExt
+		xExt = (2 * xHalfExt) + 1;
+		zExt = (2 * zHalfExt) + 1;
+
         //Build an offset for the dyn playfield from the BasePlatform e.g. the bigger halfExtent value in unity units
+
         //Calculate a scale factor for scaling the non-movable environment (and therefore the camera) and the BasePlatform 
         // the factors that the environment are scaled for right now are for x/zHalfExt =1, scale accordingly
         //i.e. the playfield/environment should be as big as the dynamic field
