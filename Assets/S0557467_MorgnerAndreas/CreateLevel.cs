@@ -131,10 +131,10 @@ public class CreateLevel : MonoBehaviour
 
             // Generate a new Maze
             var mazeGenerator = new MazeGenerator(xExt, zExt);
-            mazeGenerator.display();
+            mazeGenerator.printToConsole();
 
             //Set the walls for the maze (place only one wall between two cells, not two!)
-            // TODO
+			generateWallsByMaze(mazeGenerator);
 
             //Place the PlayerBall above the playfiel
             placeBallStart();
@@ -175,6 +175,38 @@ public class CreateLevel : MonoBehaviour
 
         }
     }
+
+
+
+	public void generateWallsByMaze(MazeGenerator mazeGen)
+	{
+		var maze = mazeGen.maze;
+		var x = mazeGen.x;
+		var y = mazeGen.y;
+
+		for (int i = 0; i < y; i++)
+		{
+			// draw the north edge
+			for (int j = 0; j < x; j++)
+			{
+				if ((maze[j,i] & 1) == 0 && i > 0) {
+					innerWall.name = "InnerWall VER(" + i + "," + j + ")";
+					GameObject innerWallPiece = Instantiate(innerWall, new Vector3(xHalfExt* tileSize+(tileSize/2)-i*tileSize,offset,j*tileSize  -  zHalfExt* tileSize), Quaternion.Euler(0, -90, 0), root.transform) as GameObject;
+				}
+			}
+			// draw the west edge
+			for (int j = 0; j < x; j++)
+			{	
+				// Generate Vert Wall
+				if ((maze [j, i] & 8) == 0 && j > 0) {
+					innerWall.name = "InnerWall HOR(" + i + "," + j + ")";
+					GameObject innerWallPiece = Instantiate(innerWall, new Vector3(xHalfExt* tileSize+(-i*tileSize),offset,j*tileSize+(tileSize/2) - zHalfExt*tileSize - tileSize), Quaternion.identity, root.transform) as GameObject;
+
+				}
+
+			}
+		}
+	}
 }
 
 
@@ -184,8 +216,8 @@ public class MazeGenerator
      * Base Idea from: http://rosettacode.org/wiki/Maze_generation#Java
      */
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     private int startX;
     private int startY;
     public int[,] maze;
@@ -255,7 +287,7 @@ public class MazeGenerator
         }
     }
 
-    public void display()
+    public void printToConsole()
     {
         String rtn = "";
 
@@ -269,8 +301,9 @@ public class MazeGenerator
             rtn += ("+\n");
             // draw the west edge
             for (int j = 0; j < x; j++)
-            {
+            {	
                 rtn += ((maze[j,i] & 8) == 0 ? "|   " : "    ");
+
             }
             rtn += ("|\n");
         }
