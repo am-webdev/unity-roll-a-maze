@@ -191,7 +191,12 @@ public class CreateLevel : MonoBehaviour
 			{
 				if ((maze[j,i] & 1) == 0 && i > 0) {
 					innerWall.name = "InnerWall VER(" + i + "," + j + ")";
-					GameObject innerWallPiece = Instantiate(innerWall, new Vector3(xHalfExt* tileSize+(tileSize/2)-i*tileSize,offset,j*tileSize  -  zHalfExt* tileSize), Quaternion.Euler(0, -90, 0), root.transform) as GameObject;
+					GameObject innerWallPiece = Instantiate(innerWall, 
+						new Vector3(
+							xHalfExt* tileSize+(tileSize/2)-i*tileSize,
+							offset,
+							j*tileSize - zHalfExt* tileSize
+						), Quaternion.Euler(0, -90, 0), root.transform) as GameObject;
 				}
 			}
 			// draw the west edge
@@ -200,8 +205,12 @@ public class CreateLevel : MonoBehaviour
 				// Generate Vert Wall
 				if ((maze [j, i] & 8) == 0 && j > 0) {
 					innerWall.name = "InnerWall HOR(" + i + "," + j + ")";
-					GameObject innerWallPiece = Instantiate(innerWall, new Vector3(xHalfExt* tileSize+(-i*tileSize),offset,j*tileSize+(tileSize/2) - zHalfExt*tileSize - tileSize), Quaternion.identity, root.transform) as GameObject;
-
+					GameObject innerWallPiece = Instantiate(innerWall,
+						new Vector3(
+							xHalfExt* tileSize+(-i*tileSize),
+							offset,
+							j*tileSize+(tileSize/2) - zHalfExt*tileSize - tileSize
+						), Quaternion.identity, root.transform) as GameObject;
 				}
 
 			}
